@@ -1,0 +1,232 @@
+
+/* global colours */
+:root {
+    --primary: royalblue;
+}
+
+/* reset styles */
+body, p, a, ul, li {
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    color: black;
+}
+
+/* base styles */
+
+body {
+    background-color: whitesmoke;
+    overflow-x: hidden;
+    font-family: 'Rubik', sans-serif;
+    font-size: larger;
+}
+
+
+/* fonts */
+
+.container label{
+    color: white;
+}
+
+/*grid*/
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(12,1fr);
+}
+
+.navigation {
+    margin: 0;
+    background-color: var(--primary);
+    padding: 5%;
+    border-bottom-right-radius: 3%;
+    border-bottom-left-radius: 3%;
+    text-align: center;
+}
+
+.navigation h1 {
+    color: white;
+    font-size: 3em;
+}
+
+.navigation h3, h5 {
+    color: greenyellow;
+}
+
+.navigation ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: royalblue;
+
+      /* Change the link color to #111 (black) on hover */
+}
+
+.navigation li {
+    float: left;
+}
+
+.navigation a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navigation li a:hover {
+    background-color: royalblue;
+  }
+
+.navigation li a:hover:not(.active) {
+    background-color: lightblue;
+  }
+
+table {
+    transform: translateX(-0.5cm);
+    width: 150%;
+}
+
+table, th, td {
+    border: none;
+    border-collapse: collapse;
+    border-radius: 1cm;
+  }
+  th, td {
+    padding: 15px;
+    text-align: center;
+    
+  }
+  #t01 {
+     
+    background-color: royalblue;
+    color: white;
+   text-align: center;
+   font-size: larger;
+    
+  }
+
+.tech :nth-child(1) {
+    grid-column: 6/10;
+    grid-row: 1;
+   
+}
+
+
+.tech :nth-child(2) {
+    grid-column: 5/8;
+    grid-row: 3;
+}
+
+.ab :nth-child(1){
+    grid-column: 7;
+    transform: translateX(-1.3cm);
+}
+
+.ab :nth-child(2){
+    grid-column: 4/10;
+    grid-row: 2;
+}
+
+/* grid for 3 columns of experience in box shaped borders */
+.exp h3 {
+    color: black;
+    transform: translateX(2.5cm);
+}
+.exp :nth-child(1){
+    grid-row: 1;
+    grid-column: 6;
+    border-bottom-left-radius: 5%;
+    border-bottom-right-radius: 5%;
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+    margin: 5%;
+    
+}
+
+.exp :nth-child(2) {
+    grid-row: 2;
+    grid-column: 3/5;
+    background-color: royalblue;
+    border-radius: 1cm;
+    margin: 5%;
+    color: whitesmoke;
+    padding: 10px;
+    
+}
+
+.exp :nth-child(3) {
+    grid-row: 2;
+    grid-column: 6/8;
+    background-color: royalblue;
+    border-radius: 1cm;
+    margin: 5%;
+    color: whitesmoke;
+    padding: 10px;
+
+    
+}
+
+.exp :nth-child(4) {
+    grid-row: 2;
+    grid-column: 9/11;
+    border-radius: 1cm;
+    background-color: royalblue;
+    margin: 5%;
+    color: whitesmoke;
+    padding: 10px;
+
+}
+
+.edu :nth-child(1) {
+    grid-row: 2;
+    grid-column: 3/6;
+    background-color: var(--primary);
+    border-bottom-left-radius: 10%;
+    border-bottom-right-radius: 10%;
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
+    margin: 10%;
+    color: whitesmoke;
+}
+
+.edu :nth-child(2) {
+    grid-row: 2;
+    grid-column: 7/10;
+    background-color: var(--primary);
+    border-bottom-left-radius: 10%;
+    border-bottom-right-radius: 10%;
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
+    margin: 10%;
+    color: whitesmoke;   
+}
+
+.edu :nth-child(3) {
+    grid-row: 2;
+    grid-column: 9/12;
+    border-bottom-left-radius: 10%;
+    border-bottom-right-radius: 10%;
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
+    background-color: var(--primary);
+    margin: 10%;
+    color: whitesmoke;
+
+}
+
+.title {
+    text-align: center;
+}
+
+.interests {
+    text-align: center;
+}
+/* Tech Skills - skill type and then list underneath*/
+
+/* Education - similar to experience */ 
+
+/* Summary in some sort of shaped border */
+
+/* Add address info to top nav bar and also include a viewer count at the top */
