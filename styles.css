@@ -223,6 +223,31 @@ table, th, td {
 .interests {
     text-align: center;
 }
+
+.blog {
+
+}
+
+.box {
+   
+    background-color: royalblue;
+    border-radius: 1cm;
+    margin: 3%;
+    padding: 1%;
+}
+
+.box h1 {
+    color: whitesmoke;
+    text-align: center;
+}
+
+.box p{
+    color: whitesmoke;
+}
+
+.box a{
+    color: rgb(130, 230, 84);
+}
 /* Tech Skills - skill type and then list underneath*/
 
 /* Education - similar to experience */ 

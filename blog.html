@@ -24,5 +24,93 @@
         <h1>Challenge 1 - Blog</h1>
 
     </nav>
+
+    <div class="blog">
+        <div class="frontend box">
+            <h1>Frontend (HTML & CSS)</h1>
+            <p>For the website, I decided to code most of the design from scratch in VSCode. The Go-Live Server extension was super useful in seeing changes in real-time.
+                For the main page, I split different parts of the website into ‘section’ tags. For example, my ‘experience’ is in a different section to my ‘education’. This allowed for easy code visibility and management. The content for the main webpage was all implemented in the ‘index.html’ file. Styling of the website was done in my ‘styles.css’. Within this file, I used the selector operators to apply designs to HTML elements. In addition, I found that using CSS Grid was super useful for setting out a layout for some of the HTML elements. Alongside using Grid, the ‘nth-child’ selector helped access and make specific changes to elements within the layout.
+                
+                <br><br>
+                Things I’d consider in the future: Using some Bootstrap templates to help save some time and making the website more responsive for different screen sizes
+                <br><br>
+                </p>
+            
+        </div>
+
+        <div class="networking box">
+            <h1>Networking (Cloud Storage, HTTPS, DNS & CDN)</h1>
+            <p>The frontend files are held in a Bucket within Cloud Storage where the permissions were set to ‘allUsers’ for full user access to the site. Initially, I set the web configuration for the bucket to have my index.html be the ‘mainpage’ and my 404.html to be the corresponding error page. I recognised later on that this could have been done in TF, which I eventually did (see Terraform section).
+                <br><br>
+                After speaking with some other colleagues, we recognised that we’d have to create a DNS Zone which will hold DNS records for our domain. Following the creation of a DNS Zone, I found two different types of DNS records, NS (Name Server) and SOA (Start of Authority) records. Details of the NS records were then sent to Dan Brodie per his request for my sub-domain.
+                <br><br>
+                To use a CDN, I had to create a HTTP(S) LB for forwarding traffic to my website. When creating this LB, my original bucket was selected to serve as the backend; for the frontend configuration a Google Managed SSL was created (took 24hrs to come into effect) and a new IP address was reserved. After consulting with some colleagues, we found that a new DNS record type (A) would be needed to ensure that IP address reserved for the frontend maps to the sub-domain. 
+                <br><br>
+                This part of the challenge did require some extra research on DNS zones and record types, which I found to be very useful.
+                <br><br>
+                </p>
+        </div>
+
+        <div class="views box">
+            <h1>Views Counter</h1>
+            <p> Creating the Views counter was among the most interesting aspects of this task, as I had never created my own API from scratch before. For this approach, I decided to use JavaScript as I hadn’t had much experience with the language. I’m planning to create a Cloud Function written in Python. 
+                <br><br>
+                The design of my API was that whenever a user visited a website, I’d retrieve the current value from the Firestore database and increment the count at the same time. To help with this, there were some useful resources online which guided how to build a REST API using NodeJS and express.js. For my API, I created both a GET and PUT request to help deal with retrieving and incrementing the database values. When I started building this API, I used the firebase CL tools which set a directory structure for my Cloud Function. This directory had a ‘index.js’ file which was the main API file. 
+                <br><br>
+                To test the API manually, I found there were quite a few ways: for example Postman was a good online tool which allowed me to see the effect of running certain requests and the responses they give. Another method I found useful was the ‘curl’ command which helped early on with using the GET requests. A better testing approach was made later on.
+                <br><br>
+                Deploying the API to a Cloud Function via Firebase tools on the CL did take a lot of time mainly due to errors. Some of these errors were down to parser options being the wrong version and others errors were syntax-related as the firebase deployment tool used eslintrc (which was super strict) to check the code. Once the Cloud Function was deployed, I navigated to Firestore UI to find the URL for the endpoint, which my frontend JavaScript method used for the viewer count. This method has a counter variable which gets the views count and displays it on the corresponding views HTML element whenever the page reloads. 
+                <br><br>
+                </p>
+        </div>
+
+        <div class="gateway box">
+            <h1>API Gateway</h1>
+            <p>To set up the API Gateway, I used the Google Docs which were useful in explaining what the Gateway is and how to build it via the CLI/Console. Within this, I created an api.yaml file which was the api configuration for my Gateway. For this file, I had to add my url endpoint from the Firestore Cloud Function as the ‘address’ for the API (where the gateway will forward traffic to). Initially, I added an API key to secure the gateway further, however I had to remove this as I was having trouble with it when testing. Once the gateway was built, its URL was used as the endpoint for the frontend Views JavaScript method as it is much more secure than directly using the Firestore address. The deployment method mentioned above was changed when I started using terraform.
+            <br><br>
+            </p>
+        </div>
+
+        <div class="tf box">
+            <h1>Terraform</h1>
+            <p>
+                Once I reached this stage I recognised that it would have been much easier for me to have started off with a Terraform-first design to begin with. However, I was able to terraform key aspects of the infrastructure either by destroying and creating new resources via TF or by writing a resource template to help import some existing infrastructure. My main source of knowledge was the Terraform docs which gave a clear structure on how the template for specific resources look.
+                <br><br>
+                For the storage bucket and the Cloud Functions, I wrote the terraform template for these resources and added in some of the existing resource details. For example, I wrote in the original bucket name for the Storage Bucket and the matching details for the Cloud Function. Once, the template for these two resources were made I ran ‘terraform import->plan->apply’ to help add the existing resources into my tf state. Other aspects of the infrastructure such as the Storage Bucket Objects and the API Gateway were all defined from scratch in TF. Once these resources were applied, I deleted the previous versions of these which were not built using Terraform.
+                <br><br>
+                My next step is to move the Networking features to TF and deploy the Cloud Function from scratch in TF.
+                            
+            <br><br>    
+            </p>
+        </div>
+
+        <div class="git box">
+            <h1>Git & CI/CD</h1>
+            <p>      
+                Source control via Git was important as it helped backup my code and go back to previous versions of my code. It also allowed me to share and collaborate my code with others. The .gitignore file helped me omit unnecessary/sensitive files such as credential keys. 
+                <br<Br>
+                Cloud Build triggers allowed me to automate my website changes whenever I committed files to my frontend repository. The Google Cloud Build trigger documents were useful in this, however I did have some issues when building my trigger but later found out this was a Cloud Build problem. This was later resolved.I found it interesting how this build trigger worked in moving my new files to my website’s bucket right after the commit. As I am planning to add some more resources to my Terraform state, I haven’t added the build trigger for the backend but will do so in the future.
+                
+            <br><br>    
+            </p>
+        </div>
+
+        <div class="testing box">
+            <h1>Unit Testing</h1>
+            <p>
+                As the scale of the project wasn’t large, I focused solely on a unit testing approach for my website. For example, I built test cases around checking whether the API increments as expected. To help build these tests for my API, I used Chai which is a common library made for creating test suites for NodeJS code. This was in union with another library called Supertest which is an assertion used for testing HTTP endpoints such as my API endpoint. Running ‘npm test’ shows the result of these test cases. I plan to implement more test cases of the website such as testing the Authentication of my website and enabling these tests to run when the build trigger for my backend is set up.
+
+            <br><br>    
+            </p>
+        </div>
+    
+        <div class="auth box">
+            <h1>Authentication</h1>
+            <p>  
+                For this task, I used Firebase to handle the Authentication. Firebase has some pre-written methods in JavaScript which handle users registering and logging in. These are found here: <a href="https://firebase.google.com/docs/auth/web/password-auth"> Firebase Docs</a>. The details of users are then stored within Firebase and can be seen under the ‘Authentication’ tab. What I’m currently working on is creating a login page where only authenticated users will be able to access my website.    
+            <br><br>    
+            </p>
+        </div>
+    </div>
 </body>
 </html>
