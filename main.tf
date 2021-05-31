@@ -90,29 +90,29 @@ resource "google_cloudfunctions_function" "app" {
   trigger_http          = true
 
   available_memory_mb         = 256
-
-  environment_variables =   {"FIREBASE_CONFIG" = jsonencode(
-    {
-      databaseURL   = "https://challenge1-310911-default-rtdb.firebaseio.com"
-      locationId    = "europe-west2"
-      projectId     = "challenge1-310911"
-      storageBucket = "challenge1-310911.appspot.com"
-    }
-  )}
         
-  entry_point                 = "main"
+  entry_point                 = "app"
   https_trigger_url           = "https://us-central1-challenge1-310911.cloudfunctions.net/app"
   ingress_settings            = "ALLOW_ALL"
+   environment_variables =   {"FIREBASE_CONFIG" = jsonencode(
+   {
+     databaseURL   = "https://challenge1-310911-default-rtdb.firebaseio.com"
+     locationId    = "europe-west2"
+     projectId     = "challenge1-310911"
+     storageBucket = "challenge1-310911.appspot.com"
+   }
+  )}
+
   labels = {
-    deployment-tool = "cli-gcloud"
+    deployment-tool = "cli-firebase"
   }
+  
 }
+
+// Function 2
+
+
+
 
 /* Firestore Documents (Imported) */
 
-resource "google_firestore_document" "count" {
-  project     = "challenge1-310911"
-  collection  = "counter"
-  document_id = "views"
-  fields      = "{\"count\":{\"integerValue\":\"668\"}}"
-}
