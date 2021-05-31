@@ -76,9 +76,9 @@
             <p>
                 Once I reached this stage I recognised that it would have been much easier for me to have started off with a Terraform-first design to begin with. However, I was able to terraform key aspects of the infrastructure either by destroying and creating new resources via TF or by writing a resource template to help import some existing infrastructure. My main source of knowledge was the Terraform docs which gave a clear structure on how the template for specific resources look.
                 <br><br>
-                For the storage bucket and the Cloud Functions, I wrote the terraform template for these resources and added in some of the existing resource details. For example, I wrote in the original bucket name for the Storage Bucket and the matching details for the Cloud Function. Once, the template for these two resources were made I ran ‘terraform import->plan->apply’ to help add the existing resources into my tf state. Other aspects of the infrastructure such as the Storage Bucket Objects and the API Gateway were all defined from scratch in TF. Once these resources were applied, I deleted the previous versions of these which were not built using Terraform.
+                For the storage bucket and the Cloud Functions, I wrote the terraform template for these resources and added in some of the existing resource details. For example, I wrote in the original bucket name for the Storage Bucket and the matching details for the Cloud Function. Once, the template for these two resources were made I ran ‘terraform import->plan->apply’ to help add the existing resources into my tf state. Other aspects of the infrastructure such as the Storage Bucket Objects and the API Gateway were all defined from scratch in TF. Once these resources were applied, I deleted the previous versions of these which were not built using Terraform. The tf 'target' option was helpful to use as it allowed me to focus on a specific resource.
                 <br><br>
-                My next step is to move the Networking features to TF and deploy the Cloud Function from scratch in TF.
+                My next step is to move the Networking features to TF and deploy the Cloud Function from scratch in TF (update: this step is done now).
                             
             <br><br>    
             </p>
