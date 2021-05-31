@@ -109,7 +109,54 @@ resource "google_cloudfunctions_function" "app" {
   
 }
 
-// Function 2
+#################################################
+// Cloud Function deployed via TF
+resource "google_storage_bucket" "bucket2" {
+  name = "function-bucket2"
+  location      = "europe-west2"
+}
+
+resource "google_storage_bucket_object" "archive" {
+  name   = "code.zip"
+  bucket = "function-bucket2"
+  source = "/home/jabraan/ch1/code.zip"
+}
+
+resource "google_cloudfunctions_function" "tf-function" {
+  name        = "tf-function"
+  description = "My Cloud function deployed via TF"
+  runtime     = "nodejs12"
+  region      = "europe-west2"
+  service_account_email = "challenge1-310911@appspot.gserviceaccount.com"
+  available_memory_mb   = 256
+  source_archive_bucket = "function-bucket2"
+  source_archive_object = "code.zip"
+  trigger_http          = true
+  entry_point           = "app"
+  timeout = 60
+  ingress_settings      = "ALLOW_ALL"
+  labels = {
+    deployment-tool = "cli-firebase"
+  }
+  environment_variables =   {"FIREBASE_CONFIG" = jsonencode(
+   {
+     databaseURL   = "https://challenge1-310911-default-rtdb.firebaseio.com"
+     locationId    = "europe-west2"
+     projectId     = "challenge1-310911"
+     storageBucket = "challenge1-310911.appspot.com"
+   }
+  )}
+}
+
+# IAM entry for all users to invoke the function
+resource "google_cloudfunctions_function_iam_member" "invoker" {
+  project        = "challenge1-310911"
+  region         = "europe-west2"
+  cloud_function = "tf-function"
+
+  role   = "roles/cloudfunctions.invoker"
+  member = "allUsers"
+}
 
 
 
