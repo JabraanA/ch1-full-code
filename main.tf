@@ -162,4 +162,117 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
 
 
 /* Firestore Documents (Imported) */
+resource "google_cloudfunctions_function" "app1" {
+  region = "us-central1"
+  name                  = "app"
+  project               = "challenge1-310911"
+  runtime               = "nodejs12"
+  service_account_email = "challenge1-310911@appspot.gserviceaccount.com"
+  timeout               = 60
+  trigger_http          = true
+
+  available_memory_mb         = 256
+        
+  entry_point                 = "app"
+  https_trigger_url           = "https://us-central1-challenge1-310911.cloudfunctions.net/app"
+  ingress_settings            = "ALLOW_ALL"
+   environment_variables =   {"FIREBASE_CONFIG" = jsonencode(
+   {
+     databaseURL   = "https://challenge1-310911-default-rtdb.firebaseio.com"
+     locationId    = "europe-west2"
+     projectId     = "challenge1-310911"
+     storageBucket = "challenge1-310911.appspot.com"
+   }
+  )}
+
+  labels = {
+    deployment-tool = "cli-firebase"
+  }
+  
+}
+
+######################################
+/* Firestore Documents (Imported) */
+ 
+resource "google_firestore_document" "counter" {
+ project     = "challenge1-310911"
+ collection  = "counter"
+ document_id = "views"
+ fields      = "{\"count\":{\"integerValue\":\"949\"}}"
+}
+
+
+################################################
+// Using Variables
+
+resource "google_storage_bucket" "newBucket" {
+  name = var.BucketName
+  location = var.region
+}
+
+
+####################################################
+/* Networking */
+
+# DNS Zone
+resource "google_dns_managed_zone" "zone" {
+  name        = "jabraan-dns"
+  dns_name    = "jabraan.cts-gcp.com."
+  description = ""
+}
+
+# Record Types
+resource "google_dns_record_set" "recordset" {
+  provider = "google-beta"
+  managed_zone = "jabraan-dns"
+  name         = "jabraan.cts-gcp.com."
+  type         = "A"
+  rrdatas      = ["34.120.78.160"]
+  ttl          = 21600
+}
+
+
+# Load Balancer (click on advanced menu to see all)
+
+// Forwarding Rules
+resource "google_compute_global_forwarding_rule" "forward-rule" {
+  project               = "challenge1-310911"
+  provider              = google-beta
+  name                  = "frontend"
+  ip_address            = "34.120.78.160"
+  ip_protocol           = "TCP"
+  target                = "https://www.googleapis.com/compute/beta/projects/challenge1-310911/global/targetHttpsProxies/loadb-target-proxy"
+  port_range            = "443-443"
+  labels                = {}  
+}
+
+// Target Proxy
+resource "google_compute_target_https_proxy" "target-proxy" {
+  name             = "loadb-target-proxy"
+  url_map          = google_compute_url_map.url-map.name
+  ssl_certificates = [google_compute_managed_ssl_certificate.ssl.name]
+}
+
+// SSL
+resource "google_compute_managed_ssl_certificate" "ssl" {
+  name        = "cert"
+  managed {
+    domains = ["jabraan.cts-gcp.com"]
+  }
+}
+
+// Url-Map
+resource "google_compute_url_map" "url-map" {
+  name        = "loadb"
+  description = ""
+  default_service = google_compute_backend_bucket.backend-bucket.name
+}
+
+// Backend
+resource "google_compute_backend_bucket" "backend-bucket" {
+  name        = "buck"
+  bucket_name = google_storage_bucket.website.name
+  enable_cdn  = true
+}
+
 
