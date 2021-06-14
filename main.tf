@@ -161,7 +161,7 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
 
 
 
-/* Firestore Documents (Imported) */
+/* IGNORE: Cloud Function (Imported) */
 resource "google_cloudfunctions_function" "app1" {
   region = "us-central1"
   name                  = "app"
